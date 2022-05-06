@@ -6,34 +6,23 @@
                 <input type="text" class="input" placeholder="Task to Start">
             </div>
             <div class="column">
-                <div class="is-flex is-align-items is-justify-content-space-between">
-                    <section>
-                        <strong>00:00:00</strong>
-                    </section>
-                    <button class="button">
-                        <span class="icon">
-                            <i class="fas fa-play"></i>
-                        </span>
-                        <span>play</span>
-                    </button>
-                    <button class="button">
-                        <span class="icon">
-                            <i class="fas fa-stop"></i>
-                        </span>
-                        <span>stop</span>
-                    </button>
-                </div>
+                <TaskTimer />
             </div>
         </div>
     </div>
 
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from 'vue'
+import TaskTimer from './TaskTimer.vue'
 
 export default defineComponent({
-    name: 'TaskForm'
-});
+    name: 'TaskForm',
+    components: {
+        TaskTimer
+    }
+})
 </script>
+
 
