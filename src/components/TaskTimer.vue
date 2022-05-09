@@ -24,6 +24,8 @@ export default defineComponent({
 
     name: 'TaskTimer',
 
+    emits: ['onFinishTimer'],
+
     components: {
         StopWatch
     },
@@ -48,6 +50,8 @@ export default defineComponent({
         stop() {
             this.stopwatchRunning = false;
             clearInterval(this.stopwatch);
+            this.$emit('onFinishTimer', this.currentTime);
+            this.currentTime = 0;
         }
     }
 });

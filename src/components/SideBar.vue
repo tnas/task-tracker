@@ -1,6 +1,11 @@
 <template>
   <header>
-    <img src="../assets/logo.png" alt="" />
+    <h1>
+      <img src="../assets/logo.png" alt="" />
+    </h1>
+    <button class="button" @click="changeMode">
+      {{ textButton }}
+    </button>
   </header>
 </template>
 
@@ -8,7 +13,34 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent ({
-    name: 'SideBar'
+
+    name: 'SideBar',
+
+    data() {
+      return {
+        enabledDarkMode: false
+      }
+    },
+
+    computed: {
+      textButton() {
+        if (this.enabledDarkMode) {
+          return 'Disable Dark Mode';
+        }
+        else {
+          return 'Enable Dark Mode';
+        }
+      }
+    },
+
+    emits: ['onChangeMode'],
+
+    methods: {
+      changeMode() {
+        this.enabledDarkMode = !this.enabledDarkMode;
+        this.$emit('onChangeMode', this.enabledDarkMode);
+      }
+    }
 });
 </script>
 
@@ -18,6 +50,7 @@ header {
   background: #0d3b66;
   width: 100%;
   height: 100vh;
+  text-align: center;
 }
 @media only screen and (max-width: 768px) {
     header {
