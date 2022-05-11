@@ -39,6 +39,7 @@ export default defineComponent({
                 timeInSeconds: elapsedTime,
                 description: this.description
             });
+            this.description = '';
         }
     }
 })
