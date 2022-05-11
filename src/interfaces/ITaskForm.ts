@@ -1,4 +1,4 @@
 export default interface ITaskform {
-    timeInSeconds: number,
-    description: string
+    timeInSeconds: number;
+    description: string;
 }
