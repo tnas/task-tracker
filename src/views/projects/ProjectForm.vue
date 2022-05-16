@@ -15,8 +15,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useStore } from '@/store';
-import { ADD_PROJECT, CHANGE_PROJECT, NOTIFY } from '@/store/mutation-types';
+import { ADD_PROJECT, CHANGE_PROJECT } from '@/store/mutation-types';
 import { NotificationType } from '@/interfaces/INotificationForm';
+import { notificationMixin } from '@/mixings/notifier'
 
 export default defineComponent({
 
@@ -40,6 +41,8 @@ export default defineComponent({
             projectName: '',
         }
     },
+    
+    mixins: [notificationMixin],
 
     methods: {
         save() {
@@ -53,12 +56,9 @@ export default defineComponent({
             else {
                 this.store.commit(ADD_PROJECT, this.projectName)
             }
+
             this.projectName = '';
-            this.store.commit(NOTIFY, {
-                title: 'New project has been saved',
-                text: 'The project is available',
-                type: NotificationType.SUCCESS
-            })
+            this.notify(NotificationType.SUCCESS, 'Project Available', 'The project has been saved successfully')
             this.$router.push('/projects')
         }
     },
