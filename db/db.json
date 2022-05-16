@@ -1,3 +1,6 @@
 {
-    "projects": []
+    "projects": [{
+        "id": 1,
+        "name": "Task Traker"
+    }]
 }
