@@ -17,7 +17,7 @@ import { defineComponent } from 'vue';
 import { useStore } from '@/store';
 import { ADD_PROJECT, CHANGE_PROJECT } from '@/store/mutation-types';
 import { NotificationType } from '@/interfaces/INotificationForm';
-import { notificationMixin } from '@/mixings/notifier'
+import useNotifier from '@/hooks/notifier'
 
 export default defineComponent({
 
@@ -41,8 +41,6 @@ export default defineComponent({
             projectName: '',
         }
     },
-    
-    mixins: [notificationMixin],
 
     methods: {
         save() {
@@ -65,8 +63,10 @@ export default defineComponent({
 
     setup() {
         const store = useStore()
+        const { notify } = useNotifier()
         return {
-            store
+            store,
+            notify
         }
     }
 })
