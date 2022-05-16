@@ -6,6 +6,7 @@
     </div>
 
     <div class="column is-three-quarter content">
+      <ProjectNotification />
       <router-view></router-view>
     </div>
 
@@ -16,14 +17,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import SideBar from './components/SideBar.vue'
+import ProjectNotification from './components/ProjectNotification.vue';
 
 export default defineComponent({
 
   name: 'App',
 
   components: {
-    SideBar
-  },
+    SideBar,
+    ProjectNotification
+},
 
   data() {
     return {
