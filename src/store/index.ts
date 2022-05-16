@@ -1,8 +1,8 @@
 import IProjectForm from "@/interfaces/IProjectForm";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
-import { ADD_PROJECT, CHANGE_PROJECT, DELETE_PROJECT } from "./mutation-types";
-import { INotificationForm, NotificationType } from '@/interfaces/INotificationForm'
+import { ADD_PROJECT, CHANGE_PROJECT, DELETE_PROJECT, NOTIFY } from "./mutation-types";
+import { INotificationForm } from '@/interfaces/INotificationForm'
 
 interface AppState {
     projects: IProjectForm[],
@@ -15,26 +15,7 @@ export const store = createStore<AppState>({
 
     state: {
         projects: [],
-        notifications: [
-            {
-                id: 1,
-                text: 'A success notification',
-                title: 'Success',
-                type: NotificationType.SUCCESS
-            },
-            {
-                id: 2,
-                text: 'A danger notification',
-                title: 'Danger',
-                type: NotificationType.DANGER
-            },
-            {
-                id: 3,
-                text: 'A failure notification',
-                title: 'Failure',
-                type: NotificationType.FAILURE
-            }
-        ]
+        notifications: []
     },
 
     mutations: {
@@ -54,6 +35,13 @@ export const store = createStore<AppState>({
 
         [DELETE_PROJECT] (state, id: string) {
             state.projects = state.projects.filter(proj => proj.id != id)
+        },
+        [NOTIFY] (state, notification: INotificationForm) {
+            notification.id = new Date().getTime()
+            state.notifications.push(notification)
+            setTimeout(() => {
+                state.notifications = state.notifications.filter(not => not.id != notification.id)
+            }, 3000);
         }
     }
 
