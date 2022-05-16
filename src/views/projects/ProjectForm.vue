@@ -15,9 +15,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useStore } from '@/store';
-import { ADD_PROJECT, CHANGE_PROJECT } from '@/store/mutation-types';
 import { NotificationType } from '@/interfaces/INotificationForm';
 import useNotifier from '@/hooks/notifier'
+import { NEW_PROJECT, UPDATE_PROJECT } from '@/store/action-types';
 
 export default defineComponent({
 
@@ -46,15 +46,20 @@ export default defineComponent({
         save() {
             
             if (this.id) {
-                this.store.commit(CHANGE_PROJECT, {
+                this.store.dispatch(UPDATE_PROJECT, {
                     id: this.id,
                     name: this.projectName
-                })   
+                }).then(() => this.refreshForm())   
             }
             else {
-                this.store.commit(ADD_PROJECT, this.projectName)
+                this.store.dispatch(NEW_PROJECT, this.projectName)
+                    .then(() => {
+                        this.refreshForm()
+                    })
             }
+        },
 
+        refreshForm() {
             this.projectName = '';
             this.notify(NotificationType.SUCCESS, 'Project Available', 'The project has been saved successfully')
             this.$router.push('/projects')

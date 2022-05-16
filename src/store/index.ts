@@ -3,7 +3,7 @@ import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
 import { ADD_PROJECT, CHANGE_PROJECT, DEFINE_PROJECTS, DELETE_PROJECT, NOTIFY } from "./mutation-types";
 import { INotificationForm } from '@/interfaces/INotificationForm'
-import { GET_PROJECTS } from "./action-types";
+import { GET_PROJECTS, NEW_PROJECT, REMOVE_PROJECT, UPDATE_PROJECT } from "./action-types";
 import http from '@/http'
 
 interface AppState {
@@ -54,6 +54,18 @@ export const store = createStore<AppState>({
         [GET_PROJECTS] ({ commit }) {
             http.get('projects')
                 .then(resp => commit(DEFINE_PROJECTS, resp.data))
+        },
+        [NEW_PROJECT] (context, projectName: string) {
+            return http.post('/projects', {
+                name: projectName
+            })
+        },
+        [UPDATE_PROJECT] (context, project: IProjectForm) {
+            return http.put(`/projects/${project.id}`, project)
+        },
+        [REMOVE_PROJECT] ({commit}, id: string) {
+            return http.delete(`/projects/${id}`)
+                .then(() => commit(DELETE_PROJECT, id))
         }
     }
 
