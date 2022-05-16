@@ -40,6 +40,7 @@
 import { defineComponent, computed } from 'vue';
 import { useStore } from '@/store';
 import { DELETE_PROJECT } from '@/store/mutation-types';
+import { GET_PROJECTS } from '@/store/action-types';
 
 export default defineComponent({
 
@@ -53,6 +54,8 @@ export default defineComponent({
 
     setup() {
         const store = useStore()
+        store.dispatch(GET_PROJECTS)
+        
         return {
             projects: computed(() => store.state.projects),
             store
