@@ -1,6 +1,12 @@
 {
-    "projects": [{
-        "id": 1,
-        "name": "Task Traker"
-    }]
+  "projects": [
+    {
+      "id": 1,
+      "name": "Task Traker 4.0"
+    },
+    {
+      "id": 2,
+      "name": "Study Typescript v3"
+    }
+  ]
 }

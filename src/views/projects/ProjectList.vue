@@ -24,7 +24,7 @@
                                 <i class="fas fa-pencil-alt"></i>
                             </span>
                         </router-link>
-                        <button class="button ml-2 is-danger" @click="delete(proj.id)">
+                        <button class="button ml-2 is-danger" @click="remove(proj.id)">
                             <span class="icon is-small">
                                 <i class="fas fa-trash"></i>
                             </span>
@@ -46,7 +46,7 @@ export default defineComponent({
     name: 'ProjectList',
 
     methods: {
-        delete(id: string) {
+        remove(id: string) {
             this.store.dispatch(REMOVE_PROJECT, id)
         }
     },
