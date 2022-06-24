@@ -8,5 +8,17 @@
       "id": 2,
       "name": "Study Typescript v3"
     }
+  ],
+
+  "tasks": [
+    {
+      "id": 1,
+      "timeInSeconds": 120,
+      "description": "Environment set up",
+      "project": {
+        "id": 1,
+        "name": "Task Traker 4.0"
+      }
+    }
   ]
 }

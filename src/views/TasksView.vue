@@ -7,11 +7,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
 import TaskForm from "../components/TaskForm.vue";
 import TrackedTask from "../components/TrackedTask.vue";
 import TaskBox from "../components/TaskBox.vue";
 import ITaskForm from "../interfaces/ITaskForm";
+import { useStore } from "@/store";
+import { GET_TASKS } from "@/store/action-types";
 
 export default defineComponent({
   name: "App",
@@ -22,12 +24,12 @@ export default defineComponent({
     TaskBox,
   },
 
-  data() {
-    return {
-      tasks: [] as ITaskForm[],
-      enabledDarkMode: false,
-    };
-  },
+  // data() {
+  //   return {
+  //     tasks: [] as ITaskForm[],
+  //     enabledDarkMode: false,
+  //   };
+  // },
 
   computed: {
     isEmptyTaskList(): boolean {
@@ -40,6 +42,15 @@ export default defineComponent({
       this.tasks.push(task);
     },
   },
+
+  setup() {
+    const store = useStore()
+    store.dispatch(GET_TASKS)
+
+    return {
+      tasks: computed(() => store.state.tasks)
+    }
+  }
 });
 </script>
 

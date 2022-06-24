@@ -1,13 +1,15 @@
 import IProjectForm from "@/interfaces/IProjectForm";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
-import { ADD_PROJECT, CHANGE_PROJECT, DEFINE_PROJECTS, DELETE_PROJECT, NOTIFY } from "./mutation-types";
+import { ADD_PROJECT, CHANGE_PROJECT, DEFINE_PROJECTS, DEFINE_TASKS, DELETE_PROJECT, NOTIFY } from "./mutation-types";
 import { INotificationForm } from '@/interfaces/INotificationForm'
-import { GET_PROJECTS, NEW_PROJECT, REMOVE_PROJECT, UPDATE_PROJECT } from "./action-types";
+import { GET_PROJECTS, GET_TASKS, NEW_PROJECT, REMOVE_PROJECT, UPDATE_PROJECT } from "./action-types";
 import http from '@/http'
+import ITaskform from "@/interfaces/ITaskForm";
 
 interface AppState {
     projects: IProjectForm[],
+    tasks: ITaskform[],
     notifications: INotificationForm[]
 }
 
@@ -17,6 +19,7 @@ export const store = createStore<AppState>({
 
     state: {
         projects: [],
+        tasks: [],
         notifications: []
     },
 
@@ -47,6 +50,9 @@ export const store = createStore<AppState>({
         },
         [DEFINE_PROJECTS] (state, projects: IProjectForm[]) {
             state.projects = projects
+        },
+        [DEFINE_TASKS] (state, tasks: ITaskform[]) {
+            state.tasks = tasks
         }
     },
 
@@ -66,7 +72,11 @@ export const store = createStore<AppState>({
         [REMOVE_PROJECT] ({commit}, id: string) {
             return http.delete(`/projects/${id}`)
                 .then(() => commit(DELETE_PROJECT, id))
-        }
+        },
+        [GET_TASKS] ({ commit }) {
+            http.get('tasks')
+                .then(resp => commit(DEFINE_TASKS, resp.data))
+        },
     }
 
 })
