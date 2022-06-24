@@ -1,9 +1,9 @@
 import IProjectForm from "@/interfaces/IProjectForm";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
-import { ADD_PROJECT, ADD_TASK, CHANGE_PROJECT, DEFINE_PROJECTS, DEFINE_TASKS, DELETE_PROJECT, NOTIFY } from "./mutation-types";
+import { ADD_PROJECT, ADD_TASK, CHANGE_PROJECT, CHANGE_TASK, DEFINE_PROJECTS, DEFINE_TASKS, DELETE_PROJECT, NOTIFY } from "./mutation-types";
 import { INotificationForm } from '@/interfaces/INotificationForm'
-import { GET_PROJECTS, GET_TASKS, NEW_PROJECT, NEW_TASK, REMOVE_PROJECT, UPDATE_PROJECT } from "./action-types";
+import { GET_PROJECTS, GET_TASKS, NEW_PROJECT, NEW_TASK, REMOVE_PROJECT, UPDATE_PROJECT, UPDATE_TASK } from "./action-types";
 import http from '@/http'
 import ITaskform from "@/interfaces/ITaskForm";
 
@@ -60,7 +60,12 @@ export const store = createStore<AppState>({
 
         [ADD_TASK] (state, task: ITaskform) {
             state.tasks.push(task)
-        }
+        },
+
+        [CHANGE_TASK] (state, task: ITaskform) {
+            const index = state.tasks.findIndex(tk => tk.id == task.id)
+            state.tasks[index] = task
+        },
     },
 
     actions: {
@@ -92,7 +97,12 @@ export const store = createStore<AppState>({
         [NEW_TASK] ({commit}, task: ITaskform) {
             return http.post('/tasks', task)
                 .then(resp => commit(ADD_TASK, resp.data))
-        }
+        },
+
+        [UPDATE_TASK] ({commit}, task: ITaskform) {
+            return http.put(`/tasks/${task.id}`, task)
+                .then(resp => commit(CHANGE_TASK, task))
+        },
     }
 
 })

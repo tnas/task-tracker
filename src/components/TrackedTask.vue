@@ -1,6 +1,6 @@
 <template>
     <TaskBox>
-        <div class="columns">
+        <div class="columns clickable" @click="clickedTask">
             <div class="column is-4">
                 {{ task.description || 'Task with no description' }}
             </div>
@@ -22,9 +22,17 @@ import TaskBox from './TaskBox.vue'
 
 export default defineComponent({
     name: 'TrackedTask',
+    emits: ['onClickedTask'],
     components: {
         StopWatch, TaskBox
     },
+
+    methods: {
+        clickedTask(): void {
+            this.$emit('onClickedTask', this.task)
+        }
+    },
+
     props: {
         task: {
             type: Object as PropType<ITaskForm>,
@@ -33,3 +41,8 @@ export default defineComponent({
     }
 })
 </script>
+<style scoped>
+    .clickable {
+        cursor: pointer;
+    }
+</style>

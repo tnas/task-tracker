@@ -4,4 +4,5 @@ export default interface ITaskform {
     timeInSeconds: number;
     description: string;
     project: IProjectForm;
+    id: number;
 }
