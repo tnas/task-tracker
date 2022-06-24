@@ -9,7 +9,6 @@
       "name": "Study Typescript v3"
     }
   ],
-
   "tasks": [
     {
       "id": 1,
@@ -19,6 +18,33 @@
         "id": 1,
         "name": "Task Traker 4.0"
       }
+    },
+    {
+      "timeInSeconds": 3,
+      "description": "Refactoring vuex",
+      "project": {
+        "id": 2,
+        "name": "Study Typescript v3"
+      },
+      "id": 2
+    },
+    {
+      "timeInSeconds": 3,
+      "description": "Preparing code",
+      "project": {
+        "id": 1,
+        "name": "Task Traker 4.0"
+      },
+      "id": 3
+    },
+    {
+      "timeInSeconds": 2,
+      "description": "Testing code",
+      "project": {
+        "id": 1,
+        "name": "Task Traker 4.0"
+      },
+      "id": 4
     }
   ]
 }

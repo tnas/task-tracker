@@ -13,7 +13,7 @@ import TrackedTask from "../components/TrackedTask.vue";
 import TaskBox from "../components/TaskBox.vue";
 import ITaskForm from "../interfaces/ITaskForm";
 import { useStore } from "@/store";
-import { GET_TASKS } from "@/store/action-types";
+import { GET_PROJECTS, GET_TASKS, NEW_TASK } from "@/store/action-types";
 
 export default defineComponent({
   name: "App",
@@ -39,16 +39,18 @@ export default defineComponent({
 
   methods: {
     saveTask(task: ITaskForm) {
-      this.tasks.push(task);
+      this.store.dispatch(NEW_TASK, task)
     },
   },
 
   setup() {
     const store = useStore()
     store.dispatch(GET_TASKS)
+    store.dispatch(GET_PROJECTS)
 
     return {
-      tasks: computed(() => store.state.tasks)
+      tasks: computed(() => store.state.tasks),
+      store
     }
   }
 });
