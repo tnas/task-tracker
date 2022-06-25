@@ -1,8 +1,20 @@
 <template>
   <TaskForm @onSaveTask="saveTask" />
   <div class="list">
-    <TrackedTask v-for="(task, index) in tasks" :key="index" :task="task" @onClickedTask="selectTask"/>
+
     <TaskBox v-if="isEmptyTaskList"> There is no tasks! </TaskBox>
+
+    <div class="field">
+      <p class="control has-icons-left has-icons-right">
+        <input class="input" type="text" placeholder="Type to filter" v-model="taskFilter">
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+      </p>
+    </div>
+
+    <TrackedTask v-for="(task, index) in tasks" :key="index" :task="task" @onClickedTask="selectTask"/>
+
     <div class="modal" :class="{'is-active': selectedTask}" v-if="selectedTask">
       <div class="modal-background"></div>
       <div class="modal-card">
@@ -28,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import TaskForm from "../components/TaskForm.vue";
 import TrackedTask from "../components/TrackedTask.vue";
 import TaskBox from "../components/TaskBox.vue";
@@ -81,10 +93,14 @@ export default defineComponent({
     const store = useStore();
     store.dispatch(GET_TASKS);
     store.dispatch(GET_PROJECTS);
+    const taskFilter = ref("");
+    const tasks = computed(() => store.state.tasks.filter(
+      t => !taskFilter.value || (t.description && t.description.includes(taskFilter.value))));
 
     return {
-      tasks: computed(() => store.state.tasks),
+      tasks,
       store,
+      taskFilter
     };
   },
 });
