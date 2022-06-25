@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useStore } from '@/store';
 import { NotificationType } from '@/interfaces/INotificationForm';
 import useNotifier from '@/hooks/notifier'
@@ -23,22 +23,9 @@ export default defineComponent({
 
     name: 'ProjectForm',
 
-    mounted() {
-        if (this.id) {
-            const project = this.store.state.project.projects.find(proj => proj.id == this.id)
-            this.projectName = project?.name || ''
-        }
-    },
-
     props: {
         id: {
             type: String
-        }
-    },
-
-    data() {
-        return {
-            projectName: '',
         }
     },
 
@@ -66,12 +53,21 @@ export default defineComponent({
         }
     },
 
-    setup() {
+    setup(props) {
+        
         const store = useStore()
         const { notify } = useNotifier()
+        const projectName = ref("")
+
+        if (props.id) {
+            const project = store.state.project.projects.find(proj => proj.id == props.id)
+            projectName.value = project?.name || ''
+        }
+
         return {
             store,
-            notify
+            notify,
+            projectName
         }
     }
 })
