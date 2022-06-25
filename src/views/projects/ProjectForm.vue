@@ -18,6 +18,7 @@ import { useStore } from '@/store';
 import { NotificationType } from '@/interfaces/INotificationForm';
 import useNotifier from '@/hooks/notifier'
 import { NEW_PROJECT, UPDATE_PROJECT } from '@/store/action-types';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
 
@@ -29,34 +30,11 @@ export default defineComponent({
         }
     },
 
-    methods: {
-        save() {
-            
-            if (this.id) {
-                this.store.dispatch(UPDATE_PROJECT, {
-                    id: this.id,
-                    name: this.projectName
-                }).then(() => this.refreshForm())   
-            }
-            else {
-                this.store.dispatch(NEW_PROJECT, this.projectName)
-                    .then(() => {
-                        this.refreshForm()
-                    })
-            }
-        },
-
-        refreshForm() {
-            this.projectName = '';
-            this.notify(NotificationType.SUCCESS, 'Project Available', 'The project has been saved successfully')
-            this.$router.push('/projects')
-        }
-    },
-
     setup(props) {
         
         const store = useStore()
         const { notify } = useNotifier()
+        const router =  useRouter()
         const projectName = ref("")
 
         if (props.id) {
@@ -64,10 +42,31 @@ export default defineComponent({
             projectName.value = project?.name || ''
         }
 
+        const refreshForm = () => {
+            projectName.value = '';
+            notify(NotificationType.SUCCESS, 'Project Available', 'The project has been saved successfully')
+            router.push('/projects')
+        }
+
+        const save = () => {
+            
+            if (props.id) {
+                store.dispatch(UPDATE_PROJECT, {
+                    id: props.id,
+                    name: projectName.value
+                }).then(() => refreshForm())   
+            }
+            else {
+                store.dispatch(NEW_PROJECT, projectName.value)
+                    .then(() => {
+                        refreshForm()
+                    })
+            }
+        }
+
         return {
-            store,
-            notify,
-            projectName
+            projectName,
+            save
         }
     }
 })
