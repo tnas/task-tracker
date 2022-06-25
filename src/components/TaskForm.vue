@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { appKey } from '@/store';
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { useStore } from 'vuex';
 import TaskTimer from './TaskTimer.vue'
 
@@ -39,28 +39,27 @@ export default defineComponent({
         TaskTimer
     },
 
-    data() {
-        return {
-            description: '',
-            projectId: ''
-        }
-    },
+    setup (props, { emit }) {
 
-    methods: {
-        finishTask(elapsedTime: number) : void {
-            this.$emit('onSaveTask', {
-                timeInSeconds: elapsedTime,
-                description: this.description,
-                project: this.projects.find(proj => proj.id == this.projectId)
-            });
-            this.description = '';
-        }
-    },
-
-    setup () {
         const store = useStore(appKey)
+        const description = ref("")
+        const projectId = ref("")
+        const projects = computed(() => store.state.project.projects)
+
+        const finishTask = (elapsedTime: number) : void => {
+            emit('onSaveTask', {
+                timeInSeconds: elapsedTime,
+                description: description.value,
+                project: projects.value.find(proj => proj.id == projectId.value)
+            });
+            description.value = '';
+        }
+
         return {
-            projects: computed(() => store.state.project.projects) 
+            projects,
+            description,
+            projectId,
+            finishTask
         }
     }
 })
