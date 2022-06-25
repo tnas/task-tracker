@@ -51,7 +51,14 @@ export const store = createStore<AppState>({
 
     actions: {
 
-        [GET_TASKS] ({ commit }) {
+        [GET_TASKS] ({ commit }, filter: string) {
+            
+            let url = 'tasks'
+
+            if (filter) {
+                url += "?description" + filter
+            }
+
             http.get('tasks')
                 .then(resp => commit(DEFINE_TASKS, resp.data))
         },

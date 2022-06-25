@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, ref, watchEffect } from "vue";
 import TaskForm from "../components/TaskForm.vue";
 import TrackedTask from "../components/TrackedTask.vue";
 import TaskBox from "../components/TaskBox.vue";
@@ -94,11 +94,14 @@ export default defineComponent({
     store.dispatch(GET_TASKS);
     store.dispatch(GET_PROJECTS);
     const taskFilter = ref("");
-    const tasks = computed(() => store.state.tasks.filter(
-      t => !taskFilter.value || (t.description && t.description.includes(taskFilter.value))));
+
+    watchEffect(() => {
+      store.dispatch(GET_TASKS, taskFilter.value)
+    })
 
     return {
-      tasks,
+      tasks : computed(() => store.state.tasks.filter(
+        t => !taskFilter.value || (t.description && t.description.includes(taskFilter.value)))),
       store,
       taskFilter
     };
