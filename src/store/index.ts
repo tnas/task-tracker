@@ -1,16 +1,16 @@
-import IProjectForm from "@/interfaces/IProjectForm";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
-import { ADD_PROJECT, ADD_TASK, CHANGE_PROJECT, CHANGE_TASK, DEFINE_PROJECTS, DEFINE_TASKS, DELETE_PROJECT, NOTIFY } from "./mutation-types";
+import { ADD_TASK, CHANGE_TASK, DEFINE_TASKS, NOTIFY } from "./mutation-types";
 import { INotificationForm } from '@/interfaces/INotificationForm'
-import { GET_PROJECTS, GET_TASKS, NEW_PROJECT, NEW_TASK, REMOVE_PROJECT, UPDATE_PROJECT, UPDATE_TASK } from "./action-types";
+import { GET_TASKS, NEW_TASK, UPDATE_TASK } from "./action-types";
 import http from '@/http'
 import ITaskform from "@/interfaces/ITaskForm";
+import { project, ProjectState } from "./modules/project";
 
-interface AppState {
-    projects: IProjectForm[],
+export interface AppState {
     tasks: ITaskform[],
-    notifications: INotificationForm[]
+    notifications: INotificationForm[],
+    project: ProjectState
 }
 
 export const appKey: InjectionKey<Store<AppState>> = Symbol()
@@ -18,40 +18,21 @@ export const appKey: InjectionKey<Store<AppState>> = Symbol()
 export const store = createStore<AppState>({
 
     state: {
-        projects: [],
         tasks: [],
-        notifications: []
+        notifications: [],
+        project: {
+            projects: []
+        }
     },
 
     mutations: {
-        [ADD_PROJECT] (state, projectName: string) {
-            const project = {
-                id: new Date().toISOString(),
-                name: projectName
-            } as IProjectForm
-
-            state.projects.push(project)
-        },
-
-        [CHANGE_PROJECT] (state, project: IProjectForm) {
-            const index = state.projects.findIndex(proj => proj.id == project.id)
-            state.projects[index] = project
-        },
-
-        [DELETE_PROJECT] (state, id: string) {
-            state.projects = state.projects.filter(proj => proj.id != id)
-        },
-
+        
         [NOTIFY] (state, notification: INotificationForm) {
             notification.id = new Date().getTime()
             state.notifications.push(notification)
             setTimeout(() => {
                 state.notifications = state.notifications.filter(not => not.id != notification.id)
             }, 3000);
-        },
-
-        [DEFINE_PROJECTS] (state, projects: IProjectForm[]) {
-            state.projects = projects
         },
 
         [DEFINE_TASKS] (state, tasks: ITaskform[]) {
@@ -69,25 +50,6 @@ export const store = createStore<AppState>({
     },
 
     actions: {
-        [GET_PROJECTS] ({ commit }) {
-            http.get('projects')
-                .then(resp => commit(DEFINE_PROJECTS, resp.data))
-        },
-
-        [NEW_PROJECT] (context, projectName: string) {
-            return http.post('/projects', {
-                name: projectName
-            })
-        },
-
-        [UPDATE_PROJECT] (context, project: IProjectForm) {
-            return http.put(`/projects/${project.id}`, project)
-        },
-
-        [REMOVE_PROJECT] ({commit}, id: string) {
-            return http.delete(`/projects/${id}`)
-                .then(() => commit(DELETE_PROJECT, id))
-        },
 
         [GET_TASKS] ({ commit }) {
             http.get('tasks')
@@ -103,6 +65,10 @@ export const store = createStore<AppState>({
             return http.put(`/tasks/${task.id}`, task)
                 .then(() => commit(CHANGE_TASK, task))
         },
+    },
+
+    modules: {
+        project
     }
 
 })

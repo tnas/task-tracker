@@ -60,7 +60,7 @@ export default defineComponent({
     setup () {
         const store = useStore(appKey)
         return {
-            projects: computed(() => store.state.projects) 
+            projects: computed(() => store.state.project.projects) 
         }
     }
 })
