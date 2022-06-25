@@ -71,9 +71,9 @@ export default defineComponent({
       this.selectedTask = task
     },
 
-    updateTask(task: ITaskForm) {
-      this.store.dispatch(UPDATE_TASK, task)
-        .then(() => this.closeModal);
+    updateTask() {
+      this.store.dispatch(UPDATE_TASK, this.selectedTask)
+        .then(() => this.closeModal());
     }
   },
 

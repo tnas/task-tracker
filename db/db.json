@@ -13,7 +13,7 @@
     {
       "id": 1,
       "timeInSeconds": 120,
-      "description": "Environment set up",
+      "description": "Environment set up updated",
       "project": {
         "id": 1,
         "name": "Task Traker 4.0"
@@ -21,7 +21,7 @@
     },
     {
       "timeInSeconds": 3,
-      "description": "Refactoring vuex",
+      "description": "Refactoring vuex ",
       "project": {
         "id": 2,
         "name": "Study Typescript v3"
@@ -30,7 +30,7 @@
     },
     {
       "timeInSeconds": 3,
-      "description": "Preparing code",
+      "description": "Preparing code for testing",
       "project": {
         "id": 1,
         "name": "Task Traker 4.0"

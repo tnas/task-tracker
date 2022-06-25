@@ -101,7 +101,7 @@ export const store = createStore<AppState>({
 
         [UPDATE_TASK] ({commit}, task: ITaskform) {
             return http.put(`/tasks/${task.id}`, task)
-                .then(resp => commit(CHANGE_TASK, task))
+                .then(() => commit(CHANGE_TASK, task))
         },
     }
 
